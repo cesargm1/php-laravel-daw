@@ -9,6 +9,10 @@ class Agenda
         array_push($this->contactos, $contacto);
     }
 
+    public function getContactos() {
+        return $this->contactos;
+    }
+
     public function deleteContacto(int $id)
     {
         foreach ($this->contactos as $key => $contacto) {
@@ -27,6 +31,13 @@ class Agenda
         }
 
         return null;
+    }
+
+    public function mostrarLista() {
+        foreach($this->contactos as $key => $contacto) {
+            echo $contacto->getNombre() . " - ";
+            echo "<a href='infocontacto.php?id=$key'>Ver contacto</a><br>";
+        }
     }
 
     public function __clone()
