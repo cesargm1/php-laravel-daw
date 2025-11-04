@@ -9,7 +9,7 @@ $libros = Libro::getAll();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>lista de libros</title>
     <link rel="stylesheet" href="/style/style.css">
 </head>
 <body>
@@ -34,7 +34,7 @@ $libros = Libro::getAll();
     </tbody>
 </table>
 
-<a href="/formulario.php">Volver al formulario</a>
+<a href="./formulario.php">Volver al formulario</a>
 
 </body>
 </html>

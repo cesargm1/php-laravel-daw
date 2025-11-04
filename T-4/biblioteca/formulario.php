@@ -1,22 +1,30 @@
 <?php
  include_once 'Libro.php';
- if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+ include_once './validator/Validator.php';
 
+ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors = [];
     $titulo = $_POST['titulo'] ?? '';
     $autor = $_POST['autor'] ?? '';
     $paginas = (int) $_POST['paginas'] ?? '';
-    $isOk = false;
-
-    if(empty($titulo) || empty($autor) ||  empty($paginas)) {
-        echo "Alguno de los campos no es valido";
-    }
-
-    if($isOk) {
-        Libro::addBook($titulo, $autor, $paginas);
-        header("status.php");
+    
+    try {
+        (new Validator($titulo, 'titulo'))->require()->validateField();
+    } catch (ValidatorException $e) {
+        $errors[] = $e->getMessage();
     }
     
-  
+    try {
+        (new Validator($autor, 'autor'))->require()->validateField();
+    } catch (ValidatorException $e) {
+        $errors[] = $e->getMessage();
+    }
+    
+    try {
+        (new Validator($paginas, 'paginas'))->require()->validatePages();
+    } catch (ValidatorException $e) {
+        $errors[] = $e->getMessage();
+    }
  }
 ?>
 
@@ -31,9 +39,12 @@
 </head>
 <body>
     <?php
-      if($isOk == true) {
+      if (empty($errors)) { 
+         header('Location: status.php');
+         exit;
+        
         ?>
-    <form method="post">
+        <form method="post">
         <input type="hidden" name="id">
 
         <label>
@@ -52,7 +63,34 @@
         </label>
         <button type="submit" value="ok">enviar</button>
      </form>
-      <?php }?>
-    
+    <?php } else {
+    ?> 
+
+<form method="post">
+        <input type="hidden" name="id">
+
+        <label>
+            titulo de la pelicula
+            <input type="text" name="titulo">
+        </label>
+
+        <label>
+            autor
+            <input type="text" name="autor">
+        </label>
+
+        <label>
+            paginas
+            <input type="number" name="paginas">
+        </label>
+        <button type="submit" value="ok">enviar</button>
+     </form>
+    <ul class="ul_errors">
+        <?php
+        foreach ($errors as $error) { ?>
+         <li><?= $error ?></li>
+       <?php } ?>
+    </ul>
+    <?php } ?>
 </body>
 </html>
