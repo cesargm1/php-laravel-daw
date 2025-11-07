@@ -1,0 +1,14 @@
+DROP DATABASE IF EXISTS login;
+CREATE database login;
+USE login;
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    login VARCHAR(50) NOT NULL UNIQUE DEFAULT 1,
+    pass CHAR(40) NOT NULL,
+
+    nombre VARCHAR(100) NOT NULL DEFAULT 'TEMP',
+    lectura TINYINT(1) NOT NULL DEFAULT 0,
+    escritura TINYINT(1) NOT NULL DEFAULT 0,
+    administracion TINYINT(1) NOT NULL DEFAULT 0
+);
